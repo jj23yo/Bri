@@ -16,7 +16,7 @@ function App() {
   const [isValentine, setIsValentine] = useState(false);
   const yesButtonSize = (noClicks * 20) + 16;
 
-  const firstImg = "https://media.tenor.com/VIChDQ6ejRQAAAAj/jumping-bear-hearts-no-png.gif";
+  const firstImg = "<img src="images/duck meme.jpg"";
   const secondImg = "https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif";
 
   const handleNo = () => {
