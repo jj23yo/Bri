@@ -1,127 +1,150 @@
 <!doctype html>
-import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
-import React, { useState } from "https://esm.sh/react@18.2.0";
-
-const NO_PHRASES = [
-  "No?! 💔",
-  "Pretty please? 🥺",
-  "Okay Bri last chance ",
-  "Seriously??",
-  "No more pokemon cards for you.",
-  "What a BULLY huhuhuhuhuhu",
-  "MY LOVER HATES ME 😭😭😭😭😭",
-];
-
-function App() {
-  const [noClicks, setNoClicks] = useState(0);
-  const [isValentine, setIsValentine] = useState(false);
-  const yesButtonSize = (noClicks * 20) + 16;
-
-  const firstImg = "<img src="images/duck meme.jpg"";
-  const secondImg = "https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif";
-
-  const handleNo = () => {
-    setNoClicks(prev => prev + 1);
-  };
-
-  const handleYes = () => {
-    setIsValentine(true);
-  };
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        fontFamily: "Arial, sans-serif",
-        textAlign: "center",
-      }}
-    >
-      {!isValentine
-        ? (
-          <>
-            <img src={firstImg} />
-            <h1>Will you be my Valentine? 💘</h1>
-            <div>
-              <button
-                onClick={handleYes}
-                style={{
-                  fontSize: `${yesButtonSize}px`,
-                  margin: "10px",
-                  padding: "10px 20px",
-                  backgroundColor: "green",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Yes
-              </button>
-              <button
-                onClick={handleNo}
-                style={{
-                  fontSize: "16px",
-                  margin: "10px",
-                  padding: "10px 20px",
-                  backgroundColor: "red",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                {noClicks === 0 ? "No" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
-              </button>
-            </div>
-          </>
-        )
-        : (
-          <>
-            <img src={secondImg} />
-            <div
-              style={{
-                fontSize: "48px",
-                color: "pink",
-                fontWeight: "bold",
-              }}
-            >
-              Yay!!! 💖🎉
-            </div>
-          </>
-        )}
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine's Day Invitation</title>
+  <style>
+    :root { --bg: #fff7fb; --accent: #ff4d7e; --ok: #28a745; --no: #d23a3a; }
+    html,body { height:100%; margin:0; font-family: Arial, sans-serif; background:var(--bg); }
+    .root {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:24px;
+      box-sizing:border-box;
+    }
+    .card {
+      background: white;
+      padding:20px 28px;
+      border-radius:12px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      max-width:520px;
+      width:100%;
+    }
+    .hero-img { max-width:320px; width:100%; border-radius:10px; display:block; margin: 0 auto 18px; }
+    .buttons { margin-top:12px; }
+    button {
+      font-size:16px;
+      margin:8px;
+      padding:10px 18px;
+      border:none;
+      color:#fff;
+      border-radius:8px;
+      cursor:pointer;
+    }
+    .yes { background:var(--ok); }
+    .no  { background:var(--no); }
+    .celebrate { font-size:42px; color:var(--accent); font-weight:700; margin-top:8px; }
+    @media (max-width:420px){
+      .card{ padding:16px; }
+      .hero-img{ max-width:240px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="root">
+    <div class="card" id="app">
+      <!-- Content is rendered by the script below -->
     </div>
-  );
-}
+  </div>
 
-function client() {
-  createRoot(document.getElementById("root")).render(<App />);
-}
-if (typeof document !== "undefined") { client(); }
+  <script>
+    // Configuration
+    const NO_PHRASES = [
+      "No?! 💔",
+      "Pretty please? 🥺",
+      "Okay last chance",
+      "Seriously??",
+      "No more Pokémon cards for you.",
+      "What a BULLY huhuhuhuhuhu",
+      "MY LOVER HATES ME 😭😭😭😭😭"
+    ];
 
-export default async function server(request: Request): Promise<Response> {
-  return new Response(
-    `
-    <html>
-      <head>
-        <title>Valentine's Day Invitation</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-          body { margin: 0; font-family: Arial, sans-serif; }
-        </style>
-      </head>
-      <body>
-        <div id="root"></div>
-        <script src="https://esm.town/v/std/catch"></script>
-        <script type="module" src="${import.meta.url}"></script>
-      </body>
-    </html>
-  `,
-    {
-      headers: { "content-type": "text/html" },
-    },
-  );
-}
+    // Local image (place your file here):
+    // Put your photo in a folder named "images" next to this index.html
+    // Rename the file to remove spaces, e.g. "duck-meme.jpg"
+    const firstImg = "images/duck-meme.jpg";
+    const secondImg = "https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif";
+
+    // State
+    let noClicks = 0;
+    let isValentine = false;
+
+    // Helpers
+    function yesButtonSizePx() {
+      return (noClicks * 20) + 16;
+    }
+
+    function noButtonText() {
+      return noClicks === 0 ? "No" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)];
+    }
+
+    // Render initial view or the valentines view
+    function render() {
+      const app = document.getElementById("app");
+      if (!isValentine) {
+        app.innerHTML = `
+          <img class="hero-img" id="mainImg" src="${firstImg}" alt="Fun image">
+          <h1>Will you be my Valentine? 💘</h1>
+          <div class="buttons">
+            <button id="yesBtn" class="yes">Yes</button>
+            <button id="noBtn" class="no">${noButtonText()}</button>
+          </div>
+        `;
+
+        // Wire events
+        const yesBtn = document.getElementById("yesBtn");
+        const noBtn  = document.getElementById("noBtn");
+        const mainImg = document.getElementById("mainImg");
+
+        function updateYesSize() {
+          yesBtn.style.fontSize = yesButtonSizePx() + "px";
+        }
+
+        yesBtn.addEventListener("click", () => {
+          isValentine = true;
+          render();
+        });
+
+        noBtn.addEventListener("click", () => {
+          noClicks += 1;
+          // change text and yes button size; if image missing, user will see broken image
+          noBtn.textContent = noButtonText();
+          updateYesSize();
+        });
+
+        // initialize size
+        updateYesSize();
+
+        // If you prefer to show a fallback text instead of a missing local image,
+        // uncomment the code below to detect load error and hide broken image.
+        mainImg.addEventListener("error", () => {
+          mainImg.style.display = "none";
+        });
+
+      } else {
+        app.innerHTML = `
+          <img class="hero-img" src="${secondImg}" alt="Celebration gif">
+          <div class="celebrate">Yay!!! 💖🎉</div>
+          <div style="margin-top:10px;">
+            <button id="backBtn" style="margin-top:12px;padding:8px 12px;border-radius:8px;border:none;background:#666;color:#fff;cursor:pointer;">
+              Back
+            </button>
+          </div>
+        `;
+        document.getElementById("backBtn").addEventListener("click", () => {
+          // allow going back and keep the noClicks value
+          isValentine = false;
+          render();
+        });
+      }
+    }
+
+    // Start
+    render();
+  </script>
+</body>
+</html>
